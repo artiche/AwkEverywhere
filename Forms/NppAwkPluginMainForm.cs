@@ -78,10 +78,11 @@ namespace AwkEverywhere.Forms
             try
             {
                 moFrontEnd.Data = TB_Data.Text;
-                moFrontEnd.Script = TB_ScriptAwk.Text;
-                moFrontEnd.ExePath = moConfig.ProgramPath;
-                moFrontEnd.TempDirectory = moConfig.PluginWorkingDirectory;
+
+                moFrontEnd.Script = CBScriptTitle.SelectedItem as IScript;                
                 
+                moFrontEnd.ExePath = moConfig.ProgramPath;
+                moFrontEnd.TempDirectory = Path.Combine(moConfig.PluginWorkingDirectory,"tmp");            
 
                 moFrontEnd.ExecScript();
 

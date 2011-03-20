@@ -67,6 +67,7 @@
     </Compile>
     <Compile Include="Frontend\AwkFrontEnd.cs" />
     <Compile Include="Frontend\IFrontEnd.cs" />
+    <Compile Include="helpers\AwkHelper.cs" />
     <Compile Include="HotKey.cs" />
     <Compile Include="NotificationIcon.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -101,13 +102,5 @@
     <Content Include="Resources\DeleteScriptIcon.png" />
     <Content Include="Resources\NewScriptIcon.png" />
     <None Include="icone.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Config" />
-    <Folder Include="Forms" />
-    <Folder Include="Forms\WSForms" />
-    <Folder Include="Frontend" />
-    <Folder Include="Resources" />
-    <Folder Include="XmlAccess" />
   </ItemGroup>
 </Project>

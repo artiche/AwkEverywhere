@@ -15,5 +15,8 @@ namespace AwkEverywhere.Config
         string Author {get; set;}
         string Guid {get; set;}
         string Version {get; set;}
+        string GenerateFinalScript(IFrontEndConfig config);
+        IList<string> GetIncludes();
+        IList<string> GetReferences();
     }
 }

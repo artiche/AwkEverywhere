@@ -5,6 +5,8 @@ using System.Xml.Serialization;
 using System.Xml;
 
 using AwkEverywhere.Config;
+using AwkEverywhere.helpers;
+using System.IO;
 
 namespace AwkEverywhere
 {
@@ -87,12 +89,100 @@ namespace AwkEverywhere
 			get {return msVersion;}
 			set {msVersion = value;}
 		}
+
         
+
+
         public override string ToString()
         {
             return Title;
         }
-    	
-		
+
+        private IList<string> mIncludes = null;
+        public IList<string> GetIncludes()
+        {
+            if (this.mIncludes == null || this.IsModified)
+            {
+                mIncludes = AwkHelper.ParseIncludes(this.Script);
+            }
+            return mIncludes;
+        }
+
+        private IList<string> mReferences = null;
+        public IList<string> GetReferences()
+        {
+            if (this.mReferences == null || this.IsModified)
+            {
+                mReferences = AwkHelper.ParseReferences(this.Script);
+            }
+            return mReferences;
+        }
+
+        /// <summary>
+        /// generate the final script (body + includes)
+        /// </summary>
+        /// <param name="config"></param>
+        /// <returns></returns>
+        public string GenerateFinalScript(IFrontEndConfig config)
+        {
+            StringBuilder finalScript = new StringBuilder();
+            GenerateFinalScript(config, new List<string>(), finalScript);
+            return finalScript.ToString();
+        }
+
+
+        private void GenerateFinalScript(IFrontEndConfig config, List<string> alreadyIncluded, StringBuilder finalScript)
+        {
+            foreach (string include in this.GetIncludes())
+            {
+                if (alreadyIncluded.Contains(include.ToUpper()))
+                {
+                    continue;
+                }
+                else
+                {
+                    alreadyIncluded.Add(include.ToUpper());
+                }
+
+                string[] tab = include.Split('|');
+                string includeType = "FILE";
+                string includeValue = include;
+                if (tab.Length == 2)
+                {
+                    includeType = tab[0].ToUpper();
+                    includeValue = tab[1];
+                }
+
+                
+
+                switch (includeType)
+                {
+                    case "FILE":
+                        {
+                            using (StreamReader reader = new StreamReader(includeValue))
+                            {
+                                finalScript.Append(reader.ReadToEnd());
+                                finalScript.Append(Environment.NewLine);
+                            }
+                        }
+                        break;
+                    case "SCRIPT":
+                        {
+                            AwkScriptXml s = config.GetScript(includeValue) as AwkScriptXml;
+                            if (s != null)
+                            {
+                                s.GenerateFinalScript(config, alreadyIncluded, finalScript);
+                                finalScript.Append(Environment.NewLine);
+                            }
+                        }
+                        break;
+                    default:
+                        throw new NotImplementedException("Unknown include type");
+                }
+            }
+
+            finalScript.Append(this.Script);
+        }
+
     }
 }

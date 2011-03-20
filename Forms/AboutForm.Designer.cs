@@ -136,7 +136,7 @@
         	this.Controls.Add(this.BtnCloseAbout);
         	this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
         	this.Name = "AboutForm";
-        	this.Text = "About Npp Awk Plugin";
+        	this.Text = "About AwkEverywhere";
         	this.Load += new System.EventHandler(this.AboutForm_Load);
         	this.ResumeLayout(false);
         	this.PerformLayout();

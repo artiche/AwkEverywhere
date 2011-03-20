@@ -126,6 +126,22 @@ namespace AwkEverywhere
             return moListeScripts;
         }
 
+        /// <summary>
+        /// get a script by its id
+        /// </summary>
+        /// <param name="id">script id</param>
+        /// <returns>script</returns>
+        public IScript GetScript(string title)
+        {
+            foreach (IScript s in moListeScripts)
+            {
+                if (s.Title == title)
+                {
+                    return s;
+                }
+            }
+            return null;
+        }
 
         public void WriteScript(IScript oScript)
         {

@@ -3,13 +3,15 @@ using System.IO;
 using System.Collections.Generic;
 using System.Text;
 using System.Runtime.InteropServices;
+using AwkEverywhere.Config;
+using AwkEverywhere.helpers;
 
 namespace AwkEverywhere.Frontend
 {
     class AwkFrontEnd : IFrontEnd
     {
         private string msData = null;
-        private string msScript = null;
+        private IScript msScript = null;
         private StringBuilder moResult = null;
         private StringBuilder moError = null;
         private string msExePath = null;
@@ -20,6 +22,13 @@ namespace AwkEverywhere.Frontend
         [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
         private static extern int GetShortPathName(string LongPath, StringBuilder ShortPath, int BufferSize);
 
+        private IFrontEndConfig mConfig = null;
+
+        public AwkFrontEnd(IFrontEndConfig config)
+        {
+            this.mConfig = config;   
+        }
+
         #region IFrontEnd Membres
 
         /// <summary>
@@ -28,7 +37,7 @@ namespace AwkEverywhere.Frontend
         public void ExecScript()
         {
             
-
+            
             #region write temp files
             string sNppAwkPluginDataPath = Path.Combine(TempDirectory, "NppAwkPluginData.txt");
             string sNppAwkPluginScriptPath = Path.Combine(TempDirectory, "NppAwkPluginScript.txt");
@@ -37,27 +46,58 @@ namespace AwkEverywhere.Frontend
             {
                 Directory.CreateDirectory(TempDirectory);
             }
-            
-            StreamWriter oStreamData = new StreamWriter(sNppAwkPluginDataPath, false, Encoding.Default);
-            try
+
+            using (StreamWriter oStreamData = new StreamWriter(sNppAwkPluginDataPath, false, Encoding.Default))
             {
                 oStreamData.Write(Data);
                 oStreamData.Flush();
             }
-            finally
-            {
-                oStreamData.Close();
-            }
 
-            StreamWriter oStreamScript = new StreamWriter(sNppAwkPluginScriptPath, false, Encoding.Default);
-            try
+            string finalScript = this.Script.GenerateFinalScript(mConfig);
+            using (StreamWriter oStreamScript = new StreamWriter(sNppAwkPluginScriptPath, false, Encoding.Default))
             {
-                oStreamScript.Write(Script);
+                oStreamScript.Write(finalScript);
                 oStreamScript.Flush();
             }
-            finally
+
+            foreach (string reference in AwkHelper.ParseReferences(finalScript))
             {
-                oStreamScript.Close();
+                //copy all references in the temp directory
+                string[] tab = reference.Split('|');
+                string referenceType = "FILE";
+                string referenceValue = reference;
+                if (tab.Length == 2)
+                {
+                    referenceType = tab[0].ToUpper();
+                    referenceValue = tab[1];
+                }
+
+                switch (referenceType)
+                {
+                    case "FILE":
+                        {
+                            if (File.Exists(referenceValue))
+                            {
+                                File.Copy(referenceValue, Path.Combine(TempDirectory, Path.GetFileName(referenceValue)));
+                            }
+                        }
+                        break;
+                    case "SCRIPT":
+                        {
+                            IScript s = mConfig.GetScript(referenceValue);
+                            if (s != null)
+                            {
+                                using (StreamWriter writer = new StreamWriter(Path.Combine(TempDirectory, s.Title + ".awk"),false))
+                                {
+                                    writer.Write(s.Script);
+                                    writer.Flush();
+                                }
+                            }
+                        }
+                        break;
+                    default :
+                        throw new NotImplementedException("Unknown reference type");
+                }
             }
             #endregion
 
@@ -84,6 +124,7 @@ namespace AwkEverywhere.Frontend
             oInfo.RedirectStandardOutput = true;
             oInfo.RedirectStandardError = true;
             oInfo.CreateNoWindow = true;
+            oInfo.WorkingDirectory = TempDirectory;
 
             System.Diagnostics.Process oProcess = new System.Diagnostics.Process();
             oProcess.StartInfo = oInfo;
@@ -140,7 +181,7 @@ namespace AwkEverywhere.Frontend
         /// <summary>
         /// input script
         /// </summary>
-        public string Script
+        public IScript Script
         {
             get { return msScript; }
             set { msScript = value; }

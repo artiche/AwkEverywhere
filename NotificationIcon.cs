@@ -27,22 +27,23 @@ namespace AwkEverywhere
 		
 		
 		#region Initialize icon and menu
-		public NotificationIcon()
-		{
-			notifyIcon = new NotifyIcon();
-			notificationMenu = new ContextMenu(InitializeMenu());
-			
-			notifyIcon.DoubleClick += IconDoubleClick;
-			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NotificationIcon));
-			notifyIcon.Icon = (Icon)resources.GetObject("$this.Icon");
-			notifyIcon.ContextMenu = notificationMenu;
-			
-			IFrontEnd oFrontEnd = new AwkFrontEnd();
-				IFrontEndConfig oConfig = new NppAwkPluginConfig();
-				moMain = new AwkEverywhere.Forms.NppAwkPluginMainForm(oFrontEnd,oConfig);
-				moMain.CopyFromNpp += new EventHandler(oMain_CopyFromNpp);
-				moMain.CopyToNpp += new EventHandler(oMain_CopyToNpp);
-		}
+        public NotificationIcon()
+        {
+            notifyIcon = new NotifyIcon();
+            notificationMenu = new ContextMenu(InitializeMenu());
+
+            notifyIcon.DoubleClick += IconDoubleClick;
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NotificationIcon));
+            notifyIcon.Icon = (Icon)resources.GetObject("$this.Icon");
+            notifyIcon.ContextMenu = notificationMenu;
+
+            
+            IFrontEndConfig oConfig = new NppAwkPluginConfig();
+            IFrontEnd oFrontEnd = new AwkFrontEnd(oConfig);
+            moMain = new AwkEverywhere.Forms.NppAwkPluginMainForm(oFrontEnd, oConfig);
+            moMain.CopyFromNpp += new EventHandler(oMain_CopyFromNpp);
+            moMain.CopyToNpp += new EventHandler(oMain_CopyToNpp);
+        }
 
 		
 		private MenuItem[] InitializeMenu()

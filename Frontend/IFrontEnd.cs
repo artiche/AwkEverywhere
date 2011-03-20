@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using AwkEverywhere.Config;
 
 namespace AwkEverywhere.Frontend
 {
@@ -10,7 +11,7 @@ namespace AwkEverywhere.Frontend
 
         string Data { get; set;}
 
-        string Script { get; set;}
+        IScript Script { get; set;}
 
         string Result { get;}
 
