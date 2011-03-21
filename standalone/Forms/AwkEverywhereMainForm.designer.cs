@@ -1,6 +1,6 @@
 ﻿namespace AwkEverywhere.Forms
 {
-    partial class NppAwkPluginMainForm
+    partial class AwkEverywhereMainForm
     {
         /// <summary>
         /// Variable nécessaire au concepteur.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NppAwkPluginMainForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AwkEverywhereMainForm));
             this.TB_PathAwk = new System.Windows.Forms.TextBox();
             this.TB_ScriptAwk = new System.Windows.Forms.TextBox();
             this.BtnExecScript = new System.Windows.Forms.Button();

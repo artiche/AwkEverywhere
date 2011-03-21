@@ -1,39 +1,27 @@
-using System;
-using System.IO;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using AwkEverywhere.Config;
 using AwkEverywhere.helpers;
+using System.IO;
 
 namespace AwkEverywhere.Frontend
 {
-    class AwkFrontEnd : IFrontEnd
+    class ShFrontEnd : IFrontEnd
     {
-        private string msData = null;
-        private IScript msScript = null;
-        private StringBuilder moResult = null;
-        private StringBuilder moError = null;
-        private string msExePath = null;
-        private string msTempDirectory = null;
-        private List<string> moArgs = new List<string>();
-
-        private IFrontEndConfig mConfig = null;
-
-        public AwkFrontEnd(IFrontEndConfig config)
+        public ShFrontEnd(IFrontEndConfig config)
         {
-            this.mConfig = config;   
+            mConfig = config;
         }
 
         #region IFrontEnd Membres
 
-        /// <summary>
-        /// Execute Awk 
-        /// </summary>
         public void ExecScript()
         {
             #region write temp files
-            string sNppAwkPluginDataPath = Path.Combine(TempDirectory, this.Script.Title+".Data.txt");
-            string sNppAwkPluginScriptPath = Path.Combine(TempDirectory, this.Script.Title+".awk");
+            string sNppAwkPluginDataPath = Path.Combine(TempDirectory, this.Script.Title + ".Data.txt");
+            string sNppAwkPluginScriptPath = Path.Combine(TempDirectory, this.Script.Title + ".awk");
 
             if (!Directory.Exists(TempDirectory))
             {
@@ -77,10 +65,10 @@ namespace AwkEverywhere.Frontend
                         break;
                     case "SCRIPT":
                         {
-                            IScript s = mConfig.GetScript(referenceValue,ScriptType.Undefined);
+                            IScript s = mConfig.GetScript(referenceValue, ScriptType.Undefined);
                             if (s != null)
                             {
-                                using (StreamWriter writer = new StreamWriter(Path.Combine(TempDirectory, s.Title + ".awk"),false))
+                                using (StreamWriter writer = new StreamWriter(Path.Combine(TempDirectory, s.Title + ".awk"), false))
                                 {
                                     writer.Write(s.GenerateFinalScript(mConfig));
                                     writer.Flush();
@@ -88,7 +76,7 @@ namespace AwkEverywhere.Frontend
                             }
                         }
                         break;
-                    default :
+                    default:
                         throw new NotImplementedException("Unknown reference type");
                 }
             }
@@ -98,21 +86,10 @@ namespace AwkEverywhere.Frontend
             moResult = new StringBuilder();
             moError = new StringBuilder();
 
-            //format Awk arguments
-            StringBuilder oArgs = new StringBuilder();
-            foreach (string sElt in Args)
-            {
-                oArgs.Append(sElt);
-                oArgs.Append(" ");
-            }
-
             StringBuilder oScriptPath = new StringBuilder(260);
             Win32Helper.GetShortPathName(sNppAwkPluginScriptPath, oScriptPath, oScriptPath.Capacity);
 
-            StringBuilder oDataPath = new StringBuilder(260);
-            Win32Helper.GetShortPathName(sNppAwkPluginDataPath, oDataPath, oDataPath.Capacity);
-
-            System.Diagnostics.ProcessStartInfo oInfo = new System.Diagnostics.ProcessStartInfo(ExePath, string.Format("{0} -f {1} {2}", oArgs.ToString(), oScriptPath.ToString(), oDataPath.ToString()));
+            System.Diagnostics.ProcessStartInfo oInfo = new System.Diagnostics.ProcessStartInfo(ExePath, oScriptPath.ToString());
             oInfo.UseShellExecute = false;
             oInfo.RedirectStandardOutput = true;
             oInfo.RedirectStandardError = true;
@@ -138,7 +115,10 @@ namespace AwkEverywhere.Frontend
             #endregion
         }
 
-        
+        private IFrontEndConfig mConfig;
+        private StringBuilder moResult = null;
+        private StringBuilder moError = null;
+        private List<string> moArgs = new List<string>();
 
         /// <summary>
         /// write standard error in moError
@@ -162,61 +142,24 @@ namespace AwkEverywhere.Frontend
             moResult.Append(Environment.NewLine);
         }
 
-        /// <summary>
-        /// input data
-        /// </summary>
-        public string Data
-        {
-            get { return msData; }
-            set { msData = value; }
-        }
+        public string Data { get; set; }
 
-        /// <summary>
-        /// input script
-        /// </summary>
-        public IScript Script
-        {
-            get { return msScript; }
-            set { msScript = value; }
-        }
+        public AwkEverywhere.Config.IScript Script { get; set; }
 
-        /// <summary>
-        /// result of script execution
-        /// </summary>
         public string Result
         {
             get { return moResult.ToString(); }
         }
 
-        /// <summary>
-        /// errors of script execution
-        /// </summary>
         public string Error
         {
             get { return moError.ToString(); }
         }
 
-        /// <summary>
-        /// Path of Awk exe
-        /// </summary>
-        public string ExePath
-        {
-            get { return msExePath; }
-            set { msExePath = value; }
-        }
+        public string ExePath { get; set; }
 
-        /// <summary>
-        /// temp directory
-        /// </summary>
-        public string TempDirectory
-        {
-            get { return msTempDirectory; }
-            set { msTempDirectory = value; }
-        }
+        public string TempDirectory { get; set; }
 
-        /// <summary>
-        /// arguments of Awk process
-        /// </summary>
         public List<string> Args
         {
             get { return moArgs; }
@@ -224,6 +167,4 @@ namespace AwkEverywhere.Frontend
 
         #endregion
     }
-    
-    
 }

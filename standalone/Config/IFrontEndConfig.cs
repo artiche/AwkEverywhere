@@ -10,7 +10,7 @@ namespace AwkEverywhere.Config
         string PluginWorkingDirectory { get; }
         void WriteConfig();
         List<IScript> GetScripts();
-        IScript GetScript(string title);
+        IScript GetScript(string title,ScriptType type);
         void WriteScript(IScript oScript);
         void DeleteScript(IScript oScript);
         IScript CreateNewScript();

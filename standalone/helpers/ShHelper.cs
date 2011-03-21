@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 
 namespace AwkEverywhere.helpers
 {
-    public static class AwkHelper
+    public static class ShHelper
     {
 
         private static Regex gIncludePattern = new Regex("\".*\"");
@@ -22,7 +22,7 @@ namespace AwkEverywhere.helpers
                     Match match = gIncludePattern.Match(sLine);
                     if (match.Success)
                     {
-                        list.Add(match.Value.Substring(1,match.Value.Length-2));
+                        list.Add(match.Value.Substring(1, match.Value.Length - 2));
                     }
                 }
             }
@@ -48,5 +48,6 @@ namespace AwkEverywhere.helpers
             }
             return list;
         }
+
     }
 }

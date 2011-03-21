@@ -1,18 +1,19 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
-using System.Xml.Serialization;
-using System.Xml;
-
 using AwkEverywhere.Config;
 using AwkEverywhere.helpers;
+using System.Xml.Serialization;
 using System.IO;
 
 namespace AwkEverywhere
 {
-    public class AwkScriptXml : IScript
+    public class ShScriptXml : IScript
     {
-        public AwkScriptXml() {
+        #region IScript Membres
+
+        public ShScriptXml() {
             Title = string.Empty;
             Script = string.Empty;
             Id = 0;
@@ -90,38 +91,8 @@ namespace AwkEverywhere
 			set {msVersion = value;}
 		}
 
-        public ScriptType Type
-        {
-            get { return ScriptType.Awk; }
-        }
+        public ScriptType Type { get { return ScriptType.Sh; } }
 
-
-        public override string ToString()
-        {
-            return Title;
-        }
-
-
-
-        private IList<string> mIncludes = null;
-        public IList<string> GetIncludes()
-        {
-            if (this.mIncludes == null || this.IsModified)
-            {
-                mIncludes = AwkHelper.ParseIncludes(this.Script);
-            }
-            return mIncludes;
-        }
-
-        private IList<string> mReferences = null;
-        public IList<string> GetReferences()
-        {
-            if (this.mReferences == null || this.IsModified)
-            {
-                mReferences = AwkHelper.ParseReferences(this.Script);
-            }
-            return mReferences;
-        }
 
         /// <summary>
         /// generate the final script (body + includes)
@@ -158,7 +129,7 @@ namespace AwkEverywhere
                     includeValue = tab[1];
                 }
 
-                
+
 
                 switch (includeType)
                 {
@@ -173,7 +144,7 @@ namespace AwkEverywhere
                         break;
                     case "SCRIPT":
                         {
-                            AwkScriptXml s = config.GetScript(includeValue,ScriptType.Awk) as AwkScriptXml;
+                            ShScriptXml s = config.GetScript(includeValue,ScriptType.Sh) as ShScriptXml;
                             if (s != null)
                             {
                                 s.GenerateFinalScript(config, alreadyIncluded, finalScript);
@@ -189,5 +160,35 @@ namespace AwkEverywhere
             finalScript.Append(this.Script);
         }
 
+
+
+        public override string ToString()
+        {
+            return Title;
+        }
+
+
+
+        private IList<string> mIncludes = null;
+        public IList<string> GetIncludes()
+        {
+            if (this.mIncludes == null || this.IsModified)
+            {
+                mIncludes = ShHelper.ParseIncludes(this.Script);
+            }
+            return mIncludes;
+        }
+
+        private IList<string> mReferences = null;
+        public IList<string> GetReferences()
+        {
+            if (this.mReferences == null || this.IsModified)
+            {
+                mReferences = ShHelper.ParseReferences(this.Script);
+            }
+            return mReferences;
+        }
+
+        #endregion
     }
 }

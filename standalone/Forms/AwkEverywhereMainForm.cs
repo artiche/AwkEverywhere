@@ -11,7 +11,7 @@ using AwkEverywhere.Config;
 
 namespace AwkEverywhere.Forms
 {
-    public partial class NppAwkPluginMainForm : Form
+    public partial class AwkEverywhereMainForm : Form
     {
         private AwkEverywhere.Frontend.IFrontEnd moFrontEnd;
         private IFrontEndConfig moConfig;
@@ -25,7 +25,7 @@ namespace AwkEverywhere.Forms
 			set { bHideOnClose = value; }
 		}
 
-        public NppAwkPluginMainForm(
+        public AwkEverywhereMainForm(
             AwkEverywhere.Frontend.IFrontEnd oFrontEnd,
             AwkEverywhere.Config.IFrontEndConfig oConfig
             )

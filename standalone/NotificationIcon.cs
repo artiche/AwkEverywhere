@@ -22,7 +22,7 @@ namespace AwkEverywhere
 		private NotifyIcon notifyIcon;
 		private ContextMenu notificationMenu;
 		
-		private AwkEverywhere.Forms.NppAwkPluginMainForm moMain;
+		private AwkEverywhere.Forms.AwkEverywhereMainForm moMain;
 		private AwkEverywhere.Forms.WSForms.WSBrowser moWSForm;
 		
 		
@@ -40,7 +40,7 @@ namespace AwkEverywhere
             
             IFrontEndConfig oConfig = new NppAwkPluginConfig();
             IFrontEnd oFrontEnd = new AwkFrontEnd(oConfig);
-            moMain = new AwkEverywhere.Forms.NppAwkPluginMainForm(oFrontEnd, oConfig);
+            moMain = new AwkEverywhere.Forms.AwkEverywhereMainForm(oFrontEnd, oConfig);
             moMain.CopyFromNpp += new EventHandler(oMain_CopyFromNpp);
             moMain.CopyToNpp += new EventHandler(oMain_CopyToNpp);
         }
