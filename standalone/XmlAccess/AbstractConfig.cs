@@ -6,6 +6,7 @@ using AwkEverywhere.Config;
 using System.Xml.Serialization;
 using System.IO;
 using System.Xml;
+using AwkEverywhere.helpers;
 
 namespace AwkEverywhere
 {
@@ -87,12 +88,11 @@ namespace AwkEverywhere
         /// </summary>
         /// <param name="id">script id</param>
         /// <returns>script</returns>
-        public IScript GetScript(string title, ScriptType type)
+        public IScript GetScript(string title)
         {
             foreach (IScript s in moListeScripts)
             {
-                if ((s.Type == type || type == ScriptType.Undefined)
-                    && s.Title == title)
+                if (s.Title == title)
                 {
                     return s;
                 }
@@ -134,7 +134,7 @@ namespace AwkEverywhere
 
                 foreach (IScript elt in moListeScripts)
                 {
-                    giMaxId = Math.Max(giMaxId, elt.Id);
+                    ScriptHelper.MaxScriptId = Math.Max(ScriptHelper.MaxScriptId, elt.Id);
                 }
                 #endregion
 
@@ -163,12 +163,12 @@ namespace AwkEverywhere
                 oWriter.Close();
             }
         }
-        private static int giMaxId = 0;
+        
 
         public IScript CreateNewScript()
         {
             //create new script
-            int iIdScript = ++giMaxId;
+            int iIdScript = ++ScriptHelper.MaxScriptId;
 
             IScript oNewScript = typeof(T).GetConstructor(Type.EmptyTypes).Invoke(new object[0]) as IScript;
 

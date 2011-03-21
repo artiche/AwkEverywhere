@@ -67,8 +67,9 @@
     </Compile>
     <Compile Include="Frontend\AwkFrontEnd.cs" />
     <Compile Include="Frontend\IFrontEnd.cs" />
-    <Compile Include="helpers\AwkHelper.cs" />
-    <Compile Include="helpers\ShHelper.cs" />
+    <Compile Include="Frontend\ShFrontEnd.cs" />
+    <Compile Include="helpers\ScriptHelper.cs" />
+    <Compile Include="helpers\Win32Helper.cs" />
     <Compile Include="HotKey.cs" />
     <Compile Include="NotificationIcon.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -77,9 +78,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="XmlAccess\AbstractConfig.cs" />
     <Compile Include="XmlAccess\AwkScriptXml.cs" />
-    <Compile Include="XmlAccess\NppAwkPluginConfig.cs" />
-    <Compile Include="XmlAccess\NppAwkPluginConfigXml.cs" />
+    <Compile Include="XmlAccess\AwkConfig.cs" />
+    <Compile Include="XmlAccess\ShConfig.cs" />
     <Compile Include="XmlAccess\ShScriptXml.cs" />
     <EmbeddedResource Include="Forms\AboutForm.resx">
       <SubType>Designer</SubType>

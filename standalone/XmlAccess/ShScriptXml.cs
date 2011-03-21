@@ -144,7 +144,7 @@ namespace AwkEverywhere
                         break;
                     case "SCRIPT":
                         {
-                            ShScriptXml s = config.GetScript(includeValue,ScriptType.Sh) as ShScriptXml;
+                            ShScriptXml s = config.GetScript(includeValue) as ShScriptXml;
                             if (s != null)
                             {
                                 s.GenerateFinalScript(config, alreadyIncluded, finalScript);
@@ -174,7 +174,7 @@ namespace AwkEverywhere
         {
             if (this.mIncludes == null || this.IsModified)
             {
-                mIncludes = ShHelper.ParseIncludes(this.Script);
+                mIncludes = ScriptHelper.ParseIncludes(this.Script);
             }
             return mIncludes;
         }
@@ -184,7 +184,7 @@ namespace AwkEverywhere
         {
             if (this.mReferences == null || this.IsModified)
             {
-                mReferences = ShHelper.ParseReferences(this.Script);
+                mReferences = ScriptHelper.ParseReferences(this.Script);
             }
             return mReferences;
         }

@@ -8,6 +8,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Threading;
@@ -37,10 +38,22 @@ namespace AwkEverywhere
             notifyIcon.Icon = (Icon)resources.GetObject("$this.Icon");
             notifyIcon.ContextMenu = notificationMenu;
 
-            
-            IFrontEndConfig oConfig = new NppAwkPluginConfig();
-            IFrontEnd oFrontEnd = new AwkFrontEnd(oConfig);
-            moMain = new AwkEverywhere.Forms.AwkEverywhereMainForm(oFrontEnd, oConfig);
+
+            Dictionary<Type, IFrontEndConfig> oConfigs = new Dictionary<Type, IFrontEndConfig>();
+            IFrontEndConfig oAwkConfig = AwkConfig.GetInstance();
+            IFrontEndConfig oShConfig = ShConfig.GetInstance();
+            oConfigs.Add(typeof(AwkScriptXml),oAwkConfig);
+            oConfigs.Add(typeof(ShScriptXml),oShConfig);
+
+
+            IFrontEnd oAwkFrontEnd = new AwkFrontEnd(oAwkConfig);
+            IFrontEnd oShFrontEnd = new ShFrontEnd(oShConfig);
+
+            Dictionary<Type, IFrontEnd> oFrontEnds = new Dictionary<Type, IFrontEnd>();
+            oFrontEnds.Add(typeof(AwkScriptXml), oAwkFrontEnd);
+            oFrontEnds.Add(typeof(ShScriptXml), oShFrontEnd);
+
+            moMain = new AwkEverywhere.Forms.AwkEverywhereMainForm(oConfigs, oFrontEnds);
             moMain.CopyFromNpp += new EventHandler(oMain_CopyFromNpp);
             moMain.CopyToNpp += new EventHandler(oMain_CopyToNpp);
         }
@@ -98,7 +111,7 @@ namespace AwkEverywhere
 		
 		private void menuWSClick(object sender, EventArgs e){
 			if(moWSForm==null){
-				IFrontEndConfig oConfig = new NppAwkPluginConfig();
+				IFrontEndConfig oConfig = AwkConfig.GetInstance();
 				moWSForm = new AwkEverywhere.Forms.WSForms.WSBrowser(oConfig);
 			}
 			moWSForm.Show();

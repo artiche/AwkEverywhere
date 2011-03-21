@@ -47,6 +47,11 @@
             this.BtnCopyToNpp = new System.Windows.Forms.Button();
             this.TB_Result = new System.Windows.Forms.RichTextBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.label2 = new System.Windows.Forms.Label();
+            this.BtnSelectShPath = new System.Windows.Forms.Button();
+            this.TB_PathSh = new System.Windows.Forms.TextBox();
+            this.RB_Awk = new System.Windows.Forms.RadioButton();
+            this.RB_Sh = new System.Windows.Forms.RadioButton();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -60,7 +65,7 @@
             // 
             this.TB_PathAwk.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.TB_PathAwk.Location = new System.Drawing.Point(76, 12);
+            this.TB_PathAwk.Location = new System.Drawing.Point(76, 2);
             this.TB_PathAwk.Name = "TB_PathAwk";
             this.TB_PathAwk.ReadOnly = true;
             this.TB_PathAwk.Size = new System.Drawing.Size(593, 20);
@@ -75,12 +80,12 @@
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.TB_ScriptAwk.Font = new System.Drawing.Font("Courier New", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TB_ScriptAwk.Location = new System.Drawing.Point(3, 30);
+            this.TB_ScriptAwk.Location = new System.Drawing.Point(3, 48);
             this.TB_ScriptAwk.MaxLength = 327670;
             this.TB_ScriptAwk.Multiline = true;
             this.TB_ScriptAwk.Name = "TB_ScriptAwk";
             this.TB_ScriptAwk.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.TB_ScriptAwk.Size = new System.Drawing.Size(275, 246);
+            this.TB_ScriptAwk.Size = new System.Drawing.Size(275, 244);
             this.TB_ScriptAwk.TabIndex = 3;
             this.TB_ScriptAwk.WordWrap = false;
             this.TB_ScriptAwk.DragDrop += new System.Windows.Forms.DragEventHandler(this.TB_ScriptAwkDragDrop);
@@ -91,7 +96,7 @@
             // BtnExecScript
             // 
             this.BtnExecScript.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.BtnExecScript.Location = new System.Drawing.Point(0, 276);
+            this.BtnExecScript.Location = new System.Drawing.Point(0, 293);
             this.BtnExecScript.Margin = new System.Windows.Forms.Padding(1, 3, 3, 3);
             this.BtnExecScript.Name = "BtnExecScript";
             this.BtnExecScript.Size = new System.Drawing.Size(278, 23);
@@ -104,12 +109,11 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             this.openFileDialog1.Filter = "*.exe|*.exe";
-            this.openFileDialog1.FileOk += new System.ComponentModel.CancelEventHandler(this.openFileDialog1_FileOk);
             // 
             // BtnSelectAwkPath
             // 
             this.BtnSelectAwkPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BtnSelectAwkPath.Location = new System.Drawing.Point(675, 10);
+            this.BtnSelectAwkPath.Location = new System.Drawing.Point(675, 0);
             this.BtnSelectAwkPath.Name = "BtnSelectAwkPath";
             this.BtnSelectAwkPath.Size = new System.Drawing.Size(25, 23);
             this.BtnSelectAwkPath.TabIndex = 6;
@@ -121,7 +125,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 15);
+            this.label1.Location = new System.Drawing.Point(12, 5);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(58, 13);
             this.label1.TabIndex = 7;
@@ -132,11 +136,13 @@
             this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.splitContainer1.Location = new System.Drawing.Point(12, 39);
+            this.splitContainer1.Location = new System.Drawing.Point(12, 58);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.RB_Sh);
+            this.splitContainer1.Panel1.Controls.Add(this.RB_Awk);
             this.splitContainer1.Panel1.Controls.Add(this.panel1);
             this.splitContainer1.Panel1.Controls.Add(this.BtnExecScript);
             this.splitContainer1.Panel1.Controls.Add(this.TB_ScriptAwk);
@@ -144,7 +150,7 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
-            this.splitContainer1.Size = new System.Drawing.Size(688, 299);
+            this.splitContainer1.Size = new System.Drawing.Size(688, 316);
             this.splitContainer1.SplitterDistance = 278;
             this.splitContainer1.TabIndex = 8;
             // 
@@ -219,8 +225,8 @@
             // 
             this.splitContainer2.Panel2.Controls.Add(this.BtnCopyToNpp);
             this.splitContainer2.Panel2.Controls.Add(this.TB_Result);
-            this.splitContainer2.Size = new System.Drawing.Size(406, 299);
-            this.splitContainer2.SplitterDistance = 150;
+            this.splitContainer2.Size = new System.Drawing.Size(406, 316);
+            this.splitContainer2.SplitterDistance = 158;
             this.splitContainer2.TabIndex = 0;
             // 
             // TB_Data
@@ -231,7 +237,7 @@
             this.TB_Data.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TB_Data.Location = new System.Drawing.Point(0, 0);
             this.TB_Data.Name = "TB_Data";
-            this.TB_Data.Size = new System.Drawing.Size(406, 127);
+            this.TB_Data.Size = new System.Drawing.Size(406, 135);
             this.TB_Data.TabIndex = 0;
             this.TB_Data.Text = "";
             this.TB_Data.WordWrap = false;
@@ -242,7 +248,7 @@
             this.BtnCopyFromNpp.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
             this.BtnCopyFromNpp.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.BtnCopyFromNpp.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BtnCopyFromNpp.Location = new System.Drawing.Point(0, 127);
+            this.BtnCopyFromNpp.Location = new System.Drawing.Point(0, 135);
             this.BtnCopyFromNpp.Margin = new System.Windows.Forms.Padding(3, 3, 1, 3);
             this.BtnCopyFromNpp.Name = "BtnCopyFromNpp";
             this.BtnCopyFromNpp.Size = new System.Drawing.Size(406, 23);
@@ -256,7 +262,7 @@
             // 
             this.BtnCopyToNpp.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
             this.BtnCopyToNpp.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.BtnCopyToNpp.Location = new System.Drawing.Point(0, 122);
+            this.BtnCopyToNpp.Location = new System.Drawing.Point(0, 131);
             this.BtnCopyToNpp.Margin = new System.Windows.Forms.Padding(1, 3, 1, 3);
             this.BtnCopyToNpp.Name = "BtnCopyToNpp";
             this.BtnCopyToNpp.Size = new System.Drawing.Size(406, 23);
@@ -275,23 +281,82 @@
             this.TB_Result.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TB_Result.Location = new System.Drawing.Point(0, 2);
             this.TB_Result.Name = "TB_Result";
-            this.TB_Result.Size = new System.Drawing.Size(406, 120);
+            this.TB_Result.Size = new System.Drawing.Size(406, 129);
             this.TB_Result.TabIndex = 0;
             this.TB_Result.Text = "";
             this.TB_Result.WordWrap = false;
             this.TB_Result.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TB_KeyDown);
             // 
-            // NppAwkPluginMainForm
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(12, 34);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(50, 13);
+            this.label2.TabIndex = 11;
+            this.label2.Text = "Sh path :";
+            // 
+            // BtnSelectShPath
+            // 
+            this.BtnSelectShPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.BtnSelectShPath.Location = new System.Drawing.Point(675, 29);
+            this.BtnSelectShPath.Name = "BtnSelectShPath";
+            this.BtnSelectShPath.Size = new System.Drawing.Size(25, 23);
+            this.BtnSelectShPath.TabIndex = 10;
+            this.BtnSelectShPath.TabStop = false;
+            this.BtnSelectShPath.Text = "...";
+            this.BtnSelectShPath.UseVisualStyleBackColor = true;
+            this.BtnSelectShPath.Click += new System.EventHandler(this.BtnSelectAwkPath_Click);
+            // 
+            // TB_PathSh
+            // 
+            this.TB_PathSh.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.TB_PathSh.Location = new System.Drawing.Point(76, 31);
+            this.TB_PathSh.Name = "TB_PathSh";
+            this.TB_PathSh.ReadOnly = true;
+            this.TB_PathSh.Size = new System.Drawing.Size(593, 20);
+            this.TB_PathSh.TabIndex = 9;
+            this.TB_PathSh.TabStop = false;
+            // 
+            // RB_Awk
+            // 
+            this.RB_Awk.AutoSize = true;
+            this.RB_Awk.Location = new System.Drawing.Point(3, 30);
+            this.RB_Awk.Name = "RB_Awk";
+            this.RB_Awk.Size = new System.Drawing.Size(46, 17);
+            this.RB_Awk.TabIndex = 6;
+            this.RB_Awk.TabStop = true;
+            this.RB_Awk.Text = "Awk";
+            this.RB_Awk.UseVisualStyleBackColor = true;
+            this.RB_Awk.CheckedChanged += new System.EventHandler(this.RB_Awk_CheckedChanged);
+            // 
+            // RB_Sh
+            // 
+            this.RB_Sh.AutoSize = true;
+            this.RB_Sh.Location = new System.Drawing.Point(55, 30);
+            this.RB_Sh.Name = "RB_Sh";
+            this.RB_Sh.Size = new System.Drawing.Size(38, 17);
+            this.RB_Sh.TabIndex = 7;
+            this.RB_Sh.TabStop = true;
+            this.RB_Sh.Text = "Sh";
+            this.RB_Sh.UseVisualStyleBackColor = true;
+            this.RB_Sh.CheckedChanged += new System.EventHandler(this.RB_Sh_CheckedChanged);
+            // 
+            // AwkEverywhereMainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(712, 344);
+            this.ClientSize = new System.Drawing.Size(712, 380);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.BtnSelectShPath);
+            this.Controls.Add(this.TB_PathSh);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.BtnSelectAwkPath);
             this.Controls.Add(this.TB_PathAwk);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "NppAwkPluginMainForm";
+            this.Name = "AwkEverywhereMainForm";
             this.Text = "AwkEverywhere";
             this.Load += new System.EventHandler(this.NppAwkPluginMainForm_Load);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.NppAwkPluginMainForm_FormClosing);
@@ -327,6 +392,11 @@
         private System.Windows.Forms.RichTextBox TB_Result;
         private System.Windows.Forms.Button BtnCopyFromNpp;
         private System.Windows.Forms.Button BtnCopyToNpp;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button BtnSelectShPath;
+        private System.Windows.Forms.TextBox TB_PathSh;
+        private System.Windows.Forms.RadioButton RB_Sh;
+        private System.Windows.Forms.RadioButton RB_Awk;
     }
 }
 

@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 
 namespace AwkEverywhere.helpers
 {
-    public static class AwkHelper
+    public static class ScriptHelper
     {
 
         private static Regex gIncludePattern = new Regex("\".*\"");
@@ -48,5 +48,7 @@ namespace AwkEverywhere.helpers
             }
             return list;
         }
+
+        public static int MaxScriptId { get; set; }
     }
 }

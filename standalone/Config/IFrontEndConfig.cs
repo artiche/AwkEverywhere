@@ -6,14 +6,16 @@ namespace AwkEverywhere.Config
 {
     public interface IFrontEndConfig
     {
-        string ProgramPath { get; set;}
-        string PluginWorkingDirectory { get; }
+        string ProgramPath { get; set; }
+        string WorkingDirectory { get; }
         void WriteConfig();
         List<IScript> GetScripts();
-        IScript GetScript(string title,ScriptType type);
+        IScript GetScript(string title);
         void WriteScript(IScript oScript);
         void DeleteScript(IScript oScript);
         IScript CreateNewScript();
+        IScript CopyScript(IScript script);
         int SelectedScriptId { get; set;}
+
     }
 }

@@ -108,7 +108,7 @@ namespace AwkEverywhere
         {
             if (this.mIncludes == null || this.IsModified)
             {
-                mIncludes = AwkHelper.ParseIncludes(this.Script);
+                mIncludes = ScriptHelper.ParseIncludes(this.Script);
             }
             return mIncludes;
         }
@@ -118,7 +118,7 @@ namespace AwkEverywhere
         {
             if (this.mReferences == null || this.IsModified)
             {
-                mReferences = AwkHelper.ParseReferences(this.Script);
+                mReferences = ScriptHelper.ParseReferences(this.Script);
             }
             return mReferences;
         }
@@ -173,7 +173,7 @@ namespace AwkEverywhere
                         break;
                     case "SCRIPT":
                         {
-                            AwkScriptXml s = config.GetScript(includeValue,ScriptType.Awk) as AwkScriptXml;
+                            AwkScriptXml s = config.GetScript(includeValue) as AwkScriptXml;
                             if (s != null)
                             {
                                 s.GenerateFinalScript(config, alreadyIncluded, finalScript);

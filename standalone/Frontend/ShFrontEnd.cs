@@ -41,7 +41,7 @@ namespace AwkEverywhere.Frontend
                 oStreamScript.Flush();
             }
 
-            foreach (string reference in AwkHelper.ParseReferences(finalScript))
+            foreach (string reference in ScriptHelper.ParseReferences(finalScript))
             {
                 //copy all references in the temp directory
                 string[] tab = reference.Split('|');
@@ -65,7 +65,7 @@ namespace AwkEverywhere.Frontend
                         break;
                     case "SCRIPT":
                         {
-                            IScript s = mConfig.GetScript(referenceValue, ScriptType.Undefined);
+                            IScript s = mConfig.GetScript(referenceValue);
                             if (s != null)
                             {
                                 using (StreamWriter writer = new StreamWriter(Path.Combine(TempDirectory, s.Title + ".awk"), false))
