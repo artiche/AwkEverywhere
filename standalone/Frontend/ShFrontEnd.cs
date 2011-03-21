@@ -17,11 +17,11 @@ namespace AwkEverywhere.Frontend
 
         #region IFrontEnd Membres
 
-        public void ExecScript()
+        public void ExecScript(Dictionary<Type, IFrontEndConfig> referencesConfig)
         {
             #region write temp files
             string sNppAwkPluginDataPath = Path.Combine(TempDirectory, this.Script.Title + ".Data.txt");
-            string sNppAwkPluginScriptPath = Path.Combine(TempDirectory, this.Script.Title + ".awk");
+            string sNppAwkPluginScriptPath = Path.Combine(TempDirectory, this.Script.Title + ".sh");
 
             if (!Directory.Exists(TempDirectory))
             {
@@ -66,9 +66,20 @@ namespace AwkEverywhere.Frontend
                     case "SCRIPT":
                         {
                             IScript s = mConfig.GetScript(referenceValue);
+                            if (s == null)
+                            {
+                                foreach (IFrontEndConfig c in referencesConfig.Values)
+                                {
+                                    s = c.GetScript(referenceValue);
+                                    if (s != null)
+                                    {
+                                        break;
+                                    }
+                                }
+                            }
                             if (s != null)
                             {
-                                using (StreamWriter writer = new StreamWriter(Path.Combine(TempDirectory, s.Title + ".awk"), false))
+                                using (StreamWriter writer = new StreamWriter(Path.Combine(TempDirectory, s.Title + "." + s.Type.ToString().ToLower()), false))
                                 {
                                     writer.Write(s.GenerateFinalScript(mConfig));
                                     writer.Flush();

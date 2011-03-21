@@ -7,7 +7,7 @@ namespace AwkEverywhere.Frontend
 {
     public interface IFrontEnd
     {
-        void ExecScript();
+        void ExecScript(Dictionary<Type, IFrontEndConfig> references);
 
         string Data { get; set;}
 

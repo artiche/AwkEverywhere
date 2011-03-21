@@ -87,7 +87,7 @@ namespace AwkEverywhere.Forms
                 oFrontEnd.ExePath = oConfig.ProgramPath;
                 oFrontEnd.TempDirectory = Path.Combine(oConfig.WorkingDirectory,"tmp");            
 
-                oFrontEnd.ExecScript();
+                oFrontEnd.ExecScript(moConfigs);
 
                 string sResult = oFrontEnd.Result;
                 string sError = oFrontEnd.Error;
