@@ -112,7 +112,7 @@ namespace AwkEverywhere.Frontend
             StringBuilder oDataPath = new StringBuilder(260);
             Win32Helper.GetShortPathName(sNppAwkPluginDataPath, oDataPath, oDataPath.Capacity);
 
-            System.Diagnostics.ProcessStartInfo oInfo = new System.Diagnostics.ProcessStartInfo(ExePath, string.Format("{0} -f {1} {2}", oArgs.ToString(), oScriptPath.ToString(), oDataPath.ToString()));
+            System.Diagnostics.ProcessStartInfo oInfo = new System.Diagnostics.ProcessStartInfo(ExePath, string.Format("--posix {0} -f {1} {2}", oArgs.ToString(), oScriptPath.ToString(), oDataPath.ToString()));
             oInfo.UseShellExecute = false;
             oInfo.RedirectStandardOutput = true;
             oInfo.RedirectStandardError = true;

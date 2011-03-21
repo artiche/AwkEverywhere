@@ -119,15 +119,22 @@ namespace AwkEverywhere
 
                     foreach (string sFile in Directory.GetFiles(WorkingDirectory, pattern))
                     {
-                        XmlTextReader oReader = new XmlTextReader(sFile);
-                        try
-                        {
-                            IScript oScript = oSerializer.Deserialize(oReader) as IScript;
-                            moListeScripts.Add(oScript);
+                        IScript oScript = null;
+                        using(XmlTextReader oReader = new XmlTextReader(sFile)){
+                            oScript = oSerializer.Deserialize(oReader) as IScript;
+                            
                         }
-                        finally
+
+                        if (oScript != null)
                         {
-                            oReader.Close();
+                            moListeScripts.Add(oScript);
+
+                            //converting old scripts files
+                            if (st == ScriptType.Undefined)
+                            {
+                                File.Delete(sFile);
+                                this.WriteScript(oScript);
+                            }
                         }
                     }
                 }
@@ -197,7 +204,7 @@ namespace AwkEverywhere
 
         public void DeleteScript(IScript oScript)
         {
-            File.Delete(Path.Combine(WorkingDirectory, string.Format("script{0:000}.script.xml", oScript.Id)));
+            File.Delete(Path.Combine(WorkingDirectory, string.Format("script{0:000}." + oScript.Type.ToString() + ".xml", oScript.Id)));
             moListeScripts.Remove(oScript);
         }
     }
