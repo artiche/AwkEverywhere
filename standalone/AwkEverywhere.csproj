@@ -31,6 +31,7 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -46,6 +47,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppSettingsKey.cs" />
     <Compile Include="Config\IFrontEndConfig.cs" />
     <Compile Include="Config\IScript.cs" />
     <Compile Include="Forms\AboutForm.cs">
@@ -60,6 +62,12 @@
     <Compile Include="Forms\AwkEverywhereMainForm.designer.cs">
       <DependentUpon>AwkEverywhereMainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\DiffForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\DiffForm.Designer.cs">
+      <DependentUpon>DiffForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\WSForms\WSBrowser.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -67,6 +75,7 @@
       <DependentUpon>WSBrowser.cs</DependentUpon>
     </Compile>
     <Compile Include="Frontend\AwkFrontEnd.cs" />
+    <Compile Include="Frontend\DiffFrontEnd.cs" />
     <Compile Include="Frontend\IFrontEnd.cs" />
     <Compile Include="Frontend\ShFrontEnd.cs" />
     <Compile Include="helpers\ScriptHelper.cs" />
@@ -82,6 +91,8 @@
     <Compile Include="XmlAccess\AbstractConfig.cs" />
     <Compile Include="XmlAccess\AwkScriptXml.cs" />
     <Compile Include="XmlAccess\AwkConfig.cs" />
+    <Compile Include="XmlAccess\DiffConfig.cs" />
+    <Compile Include="XmlAccess\DiffScript.cs" />
     <Compile Include="XmlAccess\ShConfig.cs" />
     <Compile Include="XmlAccess\ShScriptXml.cs" />
     <EmbeddedResource Include="Forms\AboutForm.resx">
@@ -92,12 +103,17 @@
       <DependentUpon>AwkEverywhereMainForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\DiffForm.resx">
+      <DependentUpon>DiffForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\WSForms\WSBrowser.resx">
       <SubType>Designer</SubType>
       <DependentUpon>WSBrowser.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="NotificationIcon.resx">
       <DependentUpon>NotificationIcon.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <SubType>Designer</SubType>
@@ -106,6 +122,7 @@
     </EmbeddedResource>
     <Content Include="Resources\DeleteScriptIcon.png" />
     <Content Include="Resources\NewScriptIcon.png" />
+    <None Include="App.config" />
     <None Include="icone.ico" />
   </ItemGroup>
 </Project>

@@ -9,6 +9,7 @@ using System.IO;
 using AwkEverywhere;
 using AwkEverywhere.Config;
 using AwkEverywhere.Frontend;
+using System.Configuration;
 
 namespace AwkEverywhere.Forms
 {
@@ -16,6 +17,7 @@ namespace AwkEverywhere.Forms
     {
         private Dictionary<Type, IFrontEnd> moFrontEnds;
         private Dictionary<Type, IFrontEndConfig> moConfigs;
+        private DiffFrontEnd moDiffFrontEnd = null;
         private IScript moSelectedScript = null;
         private bool bHideOnClose = true;
         
@@ -33,6 +35,8 @@ namespace AwkEverywhere.Forms
         {
             moConfigs = oConfigs;
             moFrontEnds = oFrontEnds;
+
+            moDiffFrontEnd = new DiffFrontEnd();
             
             moHotKey = new HotKey(this);
 			moHotKey.RegisterHotKey(Keys.A, HotKey.HotKeyModifiers.Control | HotKey.HotKeyModifiers.Alt);
@@ -80,12 +84,13 @@ namespace AwkEverywhere.Forms
             {
                 IFrontEnd oFrontEnd = moFrontEnds[moSelectedScript.GetType()];
                 IFrontEndConfig oConfig = moConfigs[moSelectedScript.GetType()];
-                oFrontEnd.Data = TB_Data.Text;
+                oFrontEnd.Data.Clear();
+                oFrontEnd.Data.Add(TB_Data.Text);
 
                 oFrontEnd.Script = moSelectedScript;
 
                 oFrontEnd.ExePath = oConfig.ProgramPath;
-                oFrontEnd.TempDirectory = Path.Combine(oConfig.WorkingDirectory,"tmp");            
+                oFrontEnd.TempDirectory = Path.Combine(oConfig.WorkingDirectory,"tmp");
 
                 oFrontEnd.ExecScript(moConfigs);
 
@@ -163,6 +168,9 @@ namespace AwkEverywhere.Forms
             
             TB_PathAwk.Text = oAwkConfig.ProgramPath;
             TB_PathSh.Text = oShConfig.ProgramPath;
+
+            BtnSelectAwkPath.Visible = string.IsNullOrEmpty(ConfigurationManager.AppSettings[AppSettingsKey.AWK_PATH_KEY]);
+            BtnSelectShPath.Visible = string.IsNullOrEmpty(ConfigurationManager.AppSettings[AppSettingsKey.SH_PATH_KEY]);
         }
 
         
@@ -494,6 +502,45 @@ namespace AwkEverywhere.Forms
                 CBScriptTitle.Items.Insert(i, convertScript);
                 CBScriptTitle.SelectedItem = convertScript;
             }
+        }
+
+        private DiffForm moDiffForm = null;
+        private void BtnDiff_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                IFrontEnd oFrontEnd = moFrontEnds[typeof(DiffScript)];
+                IFrontEndConfig oConfig = moConfigs[typeof(DiffScript)];
+                oFrontEnd.Data.Clear();
+                oFrontEnd.Data.Add(TB_Data.Text);
+                oFrontEnd.Data.Add(TB_Result.Text);
+
+                oFrontEnd.ExePath = oConfig.ProgramPath;
+                oFrontEnd.TempDirectory = Path.Combine(oConfig.WorkingDirectory, "tmp");
+
+                oFrontEnd.ExecScript(moConfigs);
+
+                string sResult = oFrontEnd.Result;
+                string sError = oFrontEnd.Error;
+                if (sError.Trim() != string.Empty)
+                {
+                    MessageBox.Show(sError);
+                }
+                else
+                {
+                    if (moDiffForm == null)
+                    {
+                        moDiffForm = new DiffForm();
+                    }
+                    moDiffForm.ShowDiff(TB_Data.Text,TB_Result.Text,oFrontEnd.Result);
+                    moDiffForm.ShowDialog(this);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
         }
         
     }

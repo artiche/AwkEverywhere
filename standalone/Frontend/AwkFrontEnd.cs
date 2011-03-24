@@ -9,7 +9,7 @@ namespace AwkEverywhere.Frontend
 {
     class AwkFrontEnd : IFrontEnd
     {
-        private string msData = null;
+        private IList<string> msData = new List<string>();
         private IScript msScript = null;
         private StringBuilder moResult = null;
         private StringBuilder moError = null;
@@ -21,7 +21,7 @@ namespace AwkEverywhere.Frontend
 
         public AwkFrontEnd(IFrontEndConfig config)
         {
-            this.mConfig = config;   
+            this.mConfig = config;  
         }
 
         #region IFrontEnd Membres
@@ -31,8 +31,10 @@ namespace AwkEverywhere.Frontend
         /// </summary>
         public void ExecScript(Dictionary<Type, IFrontEndConfig> referencesConfig)
         {
+
+
             #region write temp files
-            string sNppAwkPluginDataPath = Path.Combine(TempDirectory, this.Script.Title+".Data.txt");
+            string sNppAwkPluginDataPath = Path.Combine(TempDirectory, this.Script.Title+".Data{0}.txt");
             string sNppAwkPluginScriptPath = Path.Combine(TempDirectory, this.Script.Title+".awk");
 
             if (!Directory.Exists(TempDirectory))
@@ -40,10 +42,16 @@ namespace AwkEverywhere.Frontend
                 Directory.CreateDirectory(TempDirectory);
             }
 
-            using (StreamWriter oStreamData = new StreamWriter(sNppAwkPluginDataPath, false, Encoding.Default))
+            
+            for (int i=0 ; i<this.Data.Count ; i++)
             {
-                oStreamData.Write(Data);
-                oStreamData.Flush();
+                string sData = this.Data[i];
+                string sFichPath = string.Format(sNppAwkPluginDataPath, i == 0 ? string.Empty : (i + 1).ToString());
+                using (StreamWriter oStreamData = new StreamWriter(sFichPath, false, Encoding.Default))
+                {
+                    oStreamData.Write(sData);
+                    oStreamData.Flush();
+                }
             }
 
             string finalScript = this.Script.GenerateFinalScript(mConfig);
@@ -121,10 +129,20 @@ namespace AwkEverywhere.Frontend
             StringBuilder oScriptPath = new StringBuilder(260);
             Win32Helper.GetShortPathName(sNppAwkPluginScriptPath, oScriptPath, oScriptPath.Capacity);
 
-            StringBuilder oDataPath = new StringBuilder(260);
-            Win32Helper.GetShortPathName(sNppAwkPluginDataPath, oDataPath, oDataPath.Capacity);
+            StringBuilder oDataPaths = new StringBuilder();
+            for (int i = 0; i < this.Data.Count; i++)
+            {
+                StringBuilder oDataPath = new StringBuilder(260);
+                Win32Helper.GetShortPathName(sNppAwkPluginDataPath, oDataPath, oDataPath.Capacity);
+                oDataPaths.Append(oDataPath.ToString());
+                if (i < this.Data.Count - 1)
+                {
+                    oDataPaths.Append(" ");
+                }
+            }
 
-            System.Diagnostics.ProcessStartInfo oInfo = new System.Diagnostics.ProcessStartInfo(ExePath, string.Format("--posix {0} -f {1} {2}", oArgs.ToString(), oScriptPath.ToString(), oDataPath.ToString()));
+                
+            System.Diagnostics.ProcessStartInfo oInfo = new System.Diagnostics.ProcessStartInfo(ExePath, string.Format("--posix {0} -f {1} {2}", oArgs.ToString(), oScriptPath.ToString(), oDataPaths.ToString()));
             oInfo.UseShellExecute = false;
             oInfo.RedirectStandardOutput = true;
             oInfo.RedirectStandardError = true;
@@ -177,10 +195,9 @@ namespace AwkEverywhere.Frontend
         /// <summary>
         /// input data
         /// </summary>
-        public string Data
+        public IList<string> Data
         {
             get { return msData; }
-            set { msData = value; }
         }
 
         /// <summary>

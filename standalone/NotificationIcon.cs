@@ -15,17 +15,21 @@ using System.Threading;
 using System.Windows.Forms;
 using AwkEverywhere.Frontend;
 using AwkEverywhere.Config;
+using System.Configuration;
 
 namespace AwkEverywhere
 {
 	public sealed class NotificationIcon
 	{
+        
+
 		private NotifyIcon notifyIcon;
 		private ContextMenu notificationMenu;
 		
 		private AwkEverywhere.Forms.AwkEverywhereMainForm moMain;
 		private AwkEverywhere.Forms.WSForms.WSBrowser moWSForm;
-		
+
+        private static NotificationIcon moNotificationIcon;
 		
 		#region Initialize icon and menu
         public NotificationIcon()
@@ -42,16 +46,19 @@ namespace AwkEverywhere
             Dictionary<Type, IFrontEndConfig> oConfigs = new Dictionary<Type, IFrontEndConfig>();
             IFrontEndConfig oAwkConfig = AwkConfig.GetInstance();
             IFrontEndConfig oShConfig = ShConfig.GetInstance();
+            IFrontEndConfig oDiffConfig = DiffConfig.GetInstance();
             oConfigs.Add(typeof(AwkScriptXml),oAwkConfig);
             oConfigs.Add(typeof(ShScriptXml),oShConfig);
-
+            oConfigs.Add(typeof(DiffScript), oDiffConfig);
 
             IFrontEnd oAwkFrontEnd = new AwkFrontEnd(oAwkConfig);
             IFrontEnd oShFrontEnd = new ShFrontEnd(oShConfig);
+            IFrontEnd oDiffFrontEnd = new DiffFrontEnd();
 
             Dictionary<Type, IFrontEnd> oFrontEnds = new Dictionary<Type, IFrontEnd>();
             oFrontEnds.Add(typeof(AwkScriptXml), oAwkFrontEnd);
             oFrontEnds.Add(typeof(ShScriptXml), oShFrontEnd);
+            oFrontEnds.Add(typeof(DiffScript), oDiffFrontEnd);
 
             moMain = new AwkEverywhere.Forms.AwkEverywhereMainForm(oConfigs, oFrontEnds);
             moMain.CopyFromNpp += new EventHandler(oMain_CopyFromNpp);
@@ -71,6 +78,8 @@ namespace AwkEverywhere
 		}
 		#endregion
 		
+
+
 		#region Main - Program entry point
 		/// <summary>Program entry point.</summary>
 		/// <param name="args">Command Line Arguments</param>
@@ -84,13 +93,15 @@ namespace AwkEverywhere
 			// Please use a unique name for the mutex to prevent conflicts with other programs
 			using (Mutex mtx = new Mutex(true, "AwkEverywhere", out isFirstInstance)) {
 				if (isFirstInstance) {
-					NotificationIcon notificationIcon = new NotificationIcon();
-					notificationIcon.notifyIcon.Visible = true;
+                    moNotificationIcon = new NotificationIcon();
+                    moNotificationIcon.notifyIcon.Visible = true;
+                    if (ConfigurationManager.AppSettings[AppSettingsKey.OPEN_WINDOW_ON_STARTUP_KEY].ToLower() == "true")
+                    {
+                        moNotificationIcon.moMain.Show();
+                        moNotificationIcon.moMain.Activate();
+                    }
 					Application.Run();
-					notificationIcon.notifyIcon.Dispose();
-				} else {
-					// The application is already running
-					// TODO: Display message box or change focus to existing application instance
+                    moNotificationIcon.notifyIcon.Dispose();
 				}
 			} // releases the Mutex
 		}

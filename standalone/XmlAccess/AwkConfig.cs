@@ -6,11 +6,13 @@ using System.Xml;
 using System.IO;
 
 using AwkEverywhere.Config;
+using System.Configuration;
 namespace AwkEverywhere
 {
     public class AwkConfig : AbstractConfig<AwkScriptXml>
     {
         private const string STATIC_CONFIG_FILE_NAME = "AwkConfig.xml";
+        
 
         protected override string CONFIG_FILE_NAME
         {
@@ -35,7 +37,14 @@ namespace AwkEverywhere
             if (!File.Exists(sConfigFilePath))
             {
                 instance = new AwkConfig();
-                instance.ProgramPath = "gawk.exe";
+                if (!string.IsNullOrEmpty(ConfigurationManager.AppSettings[AppSettingsKey.AWK_PATH_KEY]))
+                {
+                    instance.ProgramPath = ConfigurationManager.AppSettings[AppSettingsKey.AWK_PATH_KEY];
+                }
+                else
+                {
+                    instance.ProgramPath = "gawk.exe";
+                }
                 instance.Version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
                 instance.WriteConfig();
             }
@@ -45,6 +54,10 @@ namespace AwkEverywhere
                 using (XmlTextReader oReader = new XmlTextReader(sConfigFilePath))
                 {
                     instance = (AwkConfig)oSerializer.Deserialize(oReader);
+                    if (!string.IsNullOrEmpty(ConfigurationManager.AppSettings[AppSettingsKey.AWK_PATH_KEY]))
+                    {
+                        instance.ProgramPath = ConfigurationManager.AppSettings[AppSettingsKey.AWK_PATH_KEY];
+                    }
                 }
             }
             return instance;

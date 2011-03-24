@@ -9,7 +9,7 @@ namespace AwkEverywhere.Frontend
     {
         void ExecScript(Dictionary<Type, IFrontEndConfig> references);
 
-        string Data { get; set;}
+        IList<string> Data { get;}
 
         IScript Script { get; set;}
 

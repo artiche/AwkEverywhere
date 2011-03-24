@@ -13,14 +13,17 @@ namespace AwkEverywhere.Frontend
         public ShFrontEnd(IFrontEndConfig config)
         {
             mConfig = config;
+            this.Data = new List<string>();
         }
 
         #region IFrontEnd Membres
 
         public void ExecScript(Dictionary<Type, IFrontEndConfig> referencesConfig)
         {
+
+       
             #region write temp files
-            string sNppAwkPluginDataPath = Path.Combine(TempDirectory, this.Script.Title + ".Data.txt");
+            string sNppAwkPluginDataPath = Path.Combine(TempDirectory, this.Script.Title + ".Data{0}.txt");
             string sNppAwkPluginScriptPath = Path.Combine(TempDirectory, this.Script.Title + ".sh");
 
             if (!Directory.Exists(TempDirectory))
@@ -28,12 +31,17 @@ namespace AwkEverywhere.Frontend
                 Directory.CreateDirectory(TempDirectory);
             }
 
-            using (StreamWriter oStreamData = new StreamWriter(sNppAwkPluginDataPath, false, Encoding.Default))
-            {
-                oStreamData.Write(Data);
-                oStreamData.Flush();
-            }
 
+            for (int i = 0; i < this.Data.Count; i++)
+            {
+                string sData = this.Data[i];
+                string sFichPath = string.Format(sNppAwkPluginDataPath, i == 0 ? string.Empty : (i + 1).ToString());
+                using (StreamWriter oStreamData = new StreamWriter(sFichPath, false, Encoding.Default))
+                {
+                    oStreamData.Write(Data);
+                    oStreamData.Flush();
+                }
+            }
             string finalScript = this.Script.GenerateFinalScript(mConfig);
             using (StreamWriter oStreamScript = new StreamWriter(sNppAwkPluginScriptPath, false, Encoding.Default))
             {
@@ -153,7 +161,7 @@ namespace AwkEverywhere.Frontend
             moResult.Append(Environment.NewLine);
         }
 
-        public string Data { get; set; }
+        public IList<string> Data { get; set; }
 
         public AwkEverywhere.Config.IScript Script { get; set; }
 

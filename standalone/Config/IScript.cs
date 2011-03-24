@@ -6,7 +6,7 @@ namespace AwkEverywhere.Config
 {
     public enum ScriptType
     {
-        Undefined,Awk,Sh
+        Undefined,Awk,Sh,Diff
     }
 
     public interface IScript
