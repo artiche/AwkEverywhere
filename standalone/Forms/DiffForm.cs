@@ -38,6 +38,7 @@ namespace AwkEverywhere.Forms
                 if (item.StartsWith(">")
                     || item.StartsWith("<")
                     || item.StartsWith("-")
+                    || item.StartsWith(@"\")
                     || item == string.Empty)
                 {
                     continue;
@@ -112,20 +113,26 @@ namespace AwkEverywhere.Forms
                 switch (diffCase)
                 {
                     case 'a' :
-                        selstart1 += TB_Output.Lines[TB_Input.Lines.Count() - 1].Length;
+                        if (TB_Input.Lines.Count() > 0)
+                        {
+                            selstart1 += TB_Output.Lines[TB_Input.Lines.Count() - 1].Length;
+                        }
                         for (int i = 0; i < (end2 - start2 + 1);i++ )
                         {
-                            string text = new string(' ', TB_Output.Lines[TB_Input.Lines.Count()-1].Length)+Environment.NewLine;
+                            string text = new string(' ', TB_Output.Lines[Math.Max(0,TB_Input.Lines.Count())].Length)+Environment.NewLine;
                             pos1+=text.Length-1;
                             TB_Input.AppendText(text);
                         }
                         color = Color.Red;
                         break;
                     case 'd' :
-                        selstart2 += TB_Input.Lines[TB_Output.Lines.Count()-1].Length;
+                        if (TB_Output.Lines.Count() > 0)
+                        {
+                            selstart2 += TB_Input.Lines[TB_Output.Lines.Count() - 1].Length;
+                        }
                         for (int i = 0; i < (end1 - start1 + 1); i++)
                         {
-                            string text = new string(' ', TB_Input.Lines[TB_Output.Lines.Count()-1].Length)+Environment.NewLine;
+                            string text = new string(' ', TB_Input.Lines[Math.Max(0,TB_Output.Lines.Count())].Length)+Environment.NewLine;
                             pos2+=text.Length-1;
                             TB_Output.AppendText(text);
                         }
@@ -139,7 +146,7 @@ namespace AwkEverywhere.Forms
                             //selstart2 += TB_Input.Lines[TB_Output.Lines.Count() - 1].Length;
                             for (int i = 0; i < t1 - t2; i++)
                             {
-                                string text = new string(' ', TB_Input.Lines[TB_Output.Lines.Count() - 1].Length) + Environment.NewLine;
+                                string text = new string(' ', TB_Input.Lines[Math.Max(0,TB_Output.Lines.Count())].Length) + Environment.NewLine;
                                 pos2 += text.Length-1;
                                 TB_Output.AppendText(text);
                             }
@@ -150,7 +157,7 @@ namespace AwkEverywhere.Forms
                             //selstart1 += TB_Output.Lines[TB_Input.Lines.Count() - 1].Length;
                             for (int i = 0; i < t2 - t1; i++)
                             {
-                                string text = new string(' ', TB_Output.Lines[TB_Input.Lines.Count() - 1].Length) + Environment.NewLine;
+                                string text = new string(' ', TB_Output.Lines[Math.Max(0,TB_Input.Lines.Count())].Length) + Environment.NewLine;
                                 pos1 += text.Length-1;
                                 TB_Input.AppendText(text);
                             }
