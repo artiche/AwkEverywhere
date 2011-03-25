@@ -133,7 +133,7 @@ namespace AwkEverywhere.Frontend
             for (int i = 0; i < this.Data.Count; i++)
             {
                 StringBuilder oDataPath = new StringBuilder(260);
-                Win32Helper.GetShortPathName(sNppAwkPluginDataPath, oDataPath, oDataPath.Capacity);
+                Win32Helper.GetShortPathName(string.Format(sNppAwkPluginDataPath, i == 0 ? string.Empty : (i + 1).ToString()), oDataPath, oDataPath.Capacity);
                 oDataPaths.Append(oDataPath.ToString());
                 if (i < this.Data.Count - 1)
                 {
