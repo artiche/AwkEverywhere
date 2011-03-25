@@ -123,7 +123,7 @@ namespace AwkEverywhere.Forms
                             pos1+=text.Length-1;
                             TB_Input.AppendText(text);
                         }
-                        color = Color.Red;
+                        color = Color.LightBlue;
                         break;
                     case 'd' :
                         if (TB_Output.Lines.Count() > 0)
@@ -136,7 +136,7 @@ namespace AwkEverywhere.Forms
                             pos2+=text.Length-1;
                             TB_Output.AppendText(text);
                         }
-                        color = Color.Blue;
+                        color = Color.LightPink;
                         break;
                     case 'c' :
                         int t1 = end1 - start1 + 1;
@@ -162,7 +162,9 @@ namespace AwkEverywhere.Forms
                                 TB_Input.AppendText(text);
                             }
                         }
-                        color = Color.Green;
+                        color = Color.LightGreen;
+
+
                         break;
                 }
 
@@ -171,6 +173,40 @@ namespace AwkEverywhere.Forms
 
                 TB_Output.Select(selstart2, pos2 - selstart2);
                 TB_Output.SelectionBackColor = color;
+
+                if (diffCase == 'c')
+                {
+                    int localSelStart1 = selstart1;
+                    int localSelStart2 = selstart2;
+
+                    string sel1 = TB_Input.SelectedText;
+                    string sel2 = TB_Output.SelectedText;
+
+                    for (int j = 0; j < sel1.Length; j++)
+                    {
+                        if (j < sel2.Length)
+                        {
+                            if (sel1[j] != sel2[j])
+                            {
+                                TB_Input.Select(selstart1 + j, 1);
+                                TB_Input.SelectionColor = Color.Red;
+
+                                TB_Output.Select(selstart2 + j, 1);
+                                TB_Output.SelectionColor = Color.Red;
+                            }
+                        }
+                        else
+                        {
+                            TB_Input.Select(selstart1 + j, 1);
+                            TB_Input.SelectionColor = Color.Red;
+                        }
+                    }
+                    if (sel2.Length > sel1.Length)
+                    {
+                        TB_Output.Select(selstart2 + sel1.Length, sel2.Length-sel1.Length);
+                        TB_Output.SelectionColor = Color.Red;
+                    }
+                }
 
             }
 
