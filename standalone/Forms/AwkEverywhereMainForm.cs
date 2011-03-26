@@ -511,30 +511,20 @@ namespace AwkEverywhere.Forms
             {
                 IFrontEnd oFrontEnd = moFrontEnds[typeof(DiffScript)];
                 IFrontEndConfig oConfig = moConfigs[typeof(DiffScript)];
-                oFrontEnd.Data.Clear();
-                oFrontEnd.Data.Add(TB_Data.Text);
-                oFrontEnd.Data.Add(TB_Result.Text);
+                
 
                 oFrontEnd.ExePath = oConfig.ProgramPath;
                 oFrontEnd.TempDirectory = Path.Combine(oConfig.WorkingDirectory, "tmp");
 
-                oFrontEnd.ExecScript(moConfigs);
-
-                string sResult = oFrontEnd.Result;
-                string sError = oFrontEnd.Error;
-                if (sError.Trim() != string.Empty)
-                {
-                    MessageBox.Show(sError);
-                }
-                else
-                {
                     if (moDiffForm == null)
                     {
-                        moDiffForm = new DiffForm();
+                        moDiffForm = new DiffForm((DiffFrontEnd)oFrontEnd);
                     }
-                    moDiffForm.ShowDiff(TB_Data.Text,TB_Result.Text,oFrontEnd.Result);
-                    moDiffForm.ShowDialog(this);
-                }
+                    if (moDiffForm.ShowDiff(TB_Data.Text, TB_Result.Text))
+                    {
+                        moDiffForm.ShowDialog(this);
+                    }
+                
             }
             catch (Exception ex)
             {

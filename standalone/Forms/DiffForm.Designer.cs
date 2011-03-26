@@ -35,6 +35,8 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.TB_Input = new System.Windows.Forms.RichTextBox();
             this.TB_Output = new System.Windows.Forms.RichTextBox();
+            this.ChkIgnoreCase = new System.Windows.Forms.CheckBox();
+            this.ChkMinimal = new System.Windows.Forms.CheckBox();
             this.ButtonsPanel.SuspendLayout();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -47,6 +49,8 @@
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.ButtonsPanel.Controls.Add(this.BtnPrevDiff);
             this.ButtonsPanel.Controls.Add(this.BtnNextDiff);
+            this.ButtonsPanel.Controls.Add(this.ChkIgnoreCase);
+            this.ButtonsPanel.Controls.Add(this.ChkMinimal);
             this.ButtonsPanel.Location = new System.Drawing.Point(12, 8);
             this.ButtonsPanel.Name = "ButtonsPanel";
             this.ButtonsPanel.Size = new System.Drawing.Size(832, 28);
@@ -62,6 +66,7 @@
             this.BtnPrevDiff.TabIndex = 0;
             this.BtnPrevDiff.Text = "Prev.";
             this.BtnPrevDiff.UseVisualStyleBackColor = true;
+            this.BtnPrevDiff.Click += new System.EventHandler(this.BtnPrevDiff_Click);
             // 
             // BtnNextDiff
             // 
@@ -73,6 +78,7 @@
             this.BtnNextDiff.TabIndex = 1;
             this.BtnNextDiff.Text = "Next";
             this.BtnNextDiff.UseVisualStyleBackColor = true;
+            this.BtnNextDiff.Click += new System.EventHandler(this.BtnNextDiff_Click);
             // 
             // splitContainer1
             // 
@@ -121,6 +127,30 @@
             this.TB_Output.Text = "";
             this.TB_Output.WordWrap = false;
             // 
+            // ChkIgnoreCase
+            // 
+            this.ChkIgnoreCase.AutoSize = true;
+            this.ChkIgnoreCase.Location = new System.Drawing.Point(96, 7);
+            this.ChkIgnoreCase.Margin = new System.Windows.Forms.Padding(3, 7, 3, 3);
+            this.ChkIgnoreCase.Name = "ChkIgnoreCase";
+            this.ChkIgnoreCase.Size = new System.Drawing.Size(81, 17);
+            this.ChkIgnoreCase.TabIndex = 2;
+            this.ChkIgnoreCase.Text = "ignore case";
+            this.ChkIgnoreCase.UseVisualStyleBackColor = true;
+            this.ChkIgnoreCase.CheckedChanged += new System.EventHandler(this.ChkIgnoreCase_CheckedChanged);
+            // 
+            // ChkMinimal
+            // 
+            this.ChkMinimal.AutoSize = true;
+            this.ChkMinimal.Location = new System.Drawing.Point(183, 7);
+            this.ChkMinimal.Margin = new System.Windows.Forms.Padding(3, 7, 3, 3);
+            this.ChkMinimal.Name = "ChkMinimal";
+            this.ChkMinimal.Size = new System.Drawing.Size(60, 17);
+            this.ChkMinimal.TabIndex = 3;
+            this.ChkMinimal.Text = "minimal";
+            this.ChkMinimal.UseVisualStyleBackColor = true;
+            this.ChkMinimal.CheckedChanged += new System.EventHandler(this.ChkMinimal_CheckedChanged);
+            // 
             // DiffForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -149,5 +179,7 @@
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.RichTextBox TB_Input;
         private System.Windows.Forms.RichTextBox TB_Output;
+        private System.Windows.Forms.CheckBox ChkIgnoreCase;
+        private System.Windows.Forms.CheckBox ChkMinimal;
     }
 }

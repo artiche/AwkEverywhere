@@ -69,7 +69,7 @@ namespace AwkEverywhere.Frontend
             StringBuilder oData2Path = new StringBuilder(260);
             Win32Helper.GetShortPathName(string.Format(sDataPath, 2), oData2Path, oData2Path.Capacity);
 
-            System.Diagnostics.ProcessStartInfo oInfo = new System.Diagnostics.ProcessStartInfo(ExePath, string.Format("{0} -d {1} {2}", oArgs.ToString(), oData1Path.ToString(), oData2Path.ToString()));
+            System.Diagnostics.ProcessStartInfo oInfo = new System.Diagnostics.ProcessStartInfo(ExePath, string.Format("{0} {1} {2}", oArgs.ToString(), oData1Path.ToString(), oData2Path.ToString()));
             oInfo.UseShellExecute = false;
             oInfo.RedirectStandardOutput = true;
             oInfo.RedirectStandardError = true;
