@@ -141,6 +141,11 @@ namespace AwkEverywhere
             throw new NotImplementedException();
         }
 
+        public IList<KeyValuePair<string, string>> GetDefines()
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }

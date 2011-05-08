@@ -22,6 +22,7 @@ namespace AwkEverywhere.Config
         string Guid {get; set;}
         string Version {get; set;}
         string GenerateFinalScript(IFrontEndConfig config);
+        IList<KeyValuePair<string, string>> GetDefines();
         IList<string> GetIncludes();
         IList<string> GetReferences();
     }

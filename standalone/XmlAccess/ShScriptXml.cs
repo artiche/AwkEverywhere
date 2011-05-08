@@ -157,7 +157,12 @@ namespace AwkEverywhere
                 }
             }
 
-            finalScript.Append(this.Script);
+            string script = this.Script;
+            foreach (KeyValuePair<string, string> elt in ScriptHelper.ParseDefines(this.Script))
+            {
+                script = script.Replace(elt.Key, elt.Value);
+            }
+            finalScript.Append(script);
         }
 
 
@@ -187,6 +192,16 @@ namespace AwkEverywhere
                 mReferences = ScriptHelper.ParseReferences(this.Script);
             }
             return mReferences;
+        }
+
+        private IList<KeyValuePair<string, string>> mDefines = null;
+        public IList<KeyValuePair<string, string>> GetDefines()
+        {
+            if (mDefines == null || this.IsModified)
+            {
+                mDefines = ScriptHelper.ParseDefines(this.Script);
+            }
+            return mDefines;
         }
 
         #endregion
