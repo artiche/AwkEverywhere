@@ -16,6 +16,7 @@ using System.Windows.Forms;
 using AwkEverywhere.Frontend;
 using AwkEverywhere.Config;
 using System.Configuration;
+using Microsoft.Win32;
 
 namespace AwkEverywhere
 {
@@ -45,33 +46,32 @@ namespace AwkEverywhere
 
             Dictionary<Type, IFrontEndConfig> oConfigs = new Dictionary<Type, IFrontEndConfig>();
             IFrontEndConfig oAwkConfig = AwkConfig.GetInstance();
-            IFrontEndConfig oShConfig = ShConfig.GetInstance();
             IFrontEndConfig oDiffConfig = DiffConfig.GetInstance();
             oConfigs.Add(typeof(AwkScriptXml),oAwkConfig);
-            oConfigs.Add(typeof(ShScriptXml),oShConfig);
             oConfigs.Add(typeof(DiffScript), oDiffConfig);
 
             IFrontEnd oAwkFrontEnd = new AwkFrontEnd(oAwkConfig);
-            IFrontEnd oShFrontEnd = new ShFrontEnd(oShConfig);
             IFrontEnd oDiffFrontEnd = new DiffFrontEnd();
 
             Dictionary<Type, IFrontEnd> oFrontEnds = new Dictionary<Type, IFrontEnd>();
             oFrontEnds.Add(typeof(AwkScriptXml), oAwkFrontEnd);
-            oFrontEnds.Add(typeof(ShScriptXml), oShFrontEnd);
             oFrontEnds.Add(typeof(DiffScript), oDiffFrontEnd);
 
             moMain = new AwkEverywhere.Forms.AwkEverywhereMainForm(oConfigs, oFrontEnds);
             moMain.CopyFromNpp += new EventHandler(oMain_CopyFromNpp);
             moMain.CopyToNpp += new EventHandler(oMain_CopyToNpp);
-        }
 
-		
+			SystemEvents.SessionEnding += SystemEvents_SessionEnding;
+
+		}
+
+
 		private MenuItem[] InitializeMenu()
 		{
 			MenuItem[] menu = new MenuItem[] {
 				new MenuItem("Open", IconDoubleClick),
 				new MenuItem("About", menuAboutClick),
-				new MenuItem("WS Scripts", menuWSClick),
+				//new MenuItem("WS Scripts", menuWSClick),
 				new MenuItem("Exit", menuExitClick)
 			};
 			return menu;
@@ -102,13 +102,19 @@ namespace AwkEverywhere
                     }
 					Application.Run();
                     moNotificationIcon.notifyIcon.Dispose();
+
 				}
 			} // releases the Mutex
 		}
-		#endregion
-		
-		#region Event Handlers
-		private void menuAboutClick(object sender, EventArgs e)
+
+        private void SystemEvents_SessionEnding(object sender, SessionEndingEventArgs e)
+        {
+			moMain.HideOnClose = false;
+        }
+        #endregion
+
+        #region Event Handlers
+        private void menuAboutClick(object sender, EventArgs e)
 		{
 			AwkEverywhere.Forms.AboutForm oAbout = new AwkEverywhere.Forms.AboutForm();
 			oAbout.ShowDialog();

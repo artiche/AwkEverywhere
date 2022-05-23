@@ -1,4 +1,4 @@
-﻿<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project ToolsVersion="Current" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <ProjectGuid>{68E65852-E2AB-4FF1-81F6-271BC3573A6F}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -10,6 +10,11 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <SourceAnalysisOverrideSettingsFile>C:\Documents and Settings\U09477\Application Data\ICSharpCode/SharpDevelop3.0\Settings.SourceAnalysis</SourceAnalysisOverrideSettingsFile>
     <ApplicationIcon>icone.ico</ApplicationIcon>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <OutputPath>bin\Debug\</OutputPath>
@@ -77,7 +82,6 @@
     <Compile Include="Frontend\AwkFrontEnd.cs" />
     <Compile Include="Frontend\DiffFrontEnd.cs" />
     <Compile Include="Frontend\IFrontEnd.cs" />
-    <Compile Include="Frontend\ShFrontEnd.cs" />
     <Compile Include="helpers\ScriptHelper.cs" />
     <Compile Include="helpers\Win32Helper.cs" />
     <Compile Include="HotKey.cs" />
@@ -93,7 +97,6 @@
     <Compile Include="XmlAccess\AwkConfig.cs" />
     <Compile Include="XmlAccess\DiffConfig.cs" />
     <Compile Include="XmlAccess\DiffScript.cs" />
-    <Compile Include="XmlAccess\ShConfig.cs" />
     <Compile Include="XmlAccess\ShScriptXml.cs" />
     <EmbeddedResource Include="Forms\AboutForm.resx">
       <SubType>Designer</SubType>

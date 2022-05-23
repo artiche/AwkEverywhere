@@ -115,18 +115,9 @@ namespace AwkEverywhere.Forms
         {
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                if (sender == BtnSelectAwkPath)
-                {
-                    TB_PathAwk.Text = openFileDialog1.FileName;
-                    moConfigs[typeof(AwkScriptXml)].ProgramPath = openFileDialog1.FileName;
-                    moConfigs[typeof(AwkScriptXml)].WriteConfig();
-                }
-                else if (sender == BtnSelectShPath)
-                {
-                    TB_PathSh.Text = openFileDialog1.FileName;
-                    moConfigs[typeof(ShScriptXml)].ProgramPath = openFileDialog1.FileName;
-                    moConfigs[typeof(ShScriptXml)].WriteConfig();
-                }
+                TB_PathAwk.Text = openFileDialog1.FileName;
+                moConfigs[typeof(AwkScriptXml)].ProgramPath = openFileDialog1.FileName;
+                moConfigs[typeof(AwkScriptXml)].WriteConfig();
             }
         }
 
@@ -167,10 +158,8 @@ namespace AwkEverywhere.Forms
 
             
             TB_PathAwk.Text = oAwkConfig.ProgramPath;
-            TB_PathSh.Text = oShConfig.ProgramPath;
 
             BtnSelectAwkPath.Visible = string.IsNullOrEmpty(ConfigurationManager.AppSettings[AppSettingsKey.AWK_PATH_KEY]);
-            BtnSelectShPath.Visible = string.IsNullOrEmpty(ConfigurationManager.AppSettings[AppSettingsKey.SH_PATH_KEY]);
         }
 
         
@@ -195,39 +184,16 @@ namespace AwkEverywhere.Forms
                     }
                     oConfig.WriteConfig();
                 }
-                switch (oSelectedScript.Type)
-                {
-                    case ScriptType.Sh: 
-                        RB_Sh.Checked = true;
-                        TB_ScriptAwk.BackColor = Color.LightGray;
-                        break;
-                    case ScriptType.Awk :
-                    default :
-                        RB_Awk.Checked = true;
-                        TB_ScriptAwk.BackColor = Color.White;
-                        break;
-                }
             }
         }
 
         private void BtnNewScript_Click(object sender, EventArgs e)
         {
             //create new script
-            if (RB_Awk.Checked)
-            {   
-                IScript oNewScript = moConfigs[typeof(AwkScriptXml)].CreateNewScript();
-                int iIndex = CBScriptTitle.Items.Add(oNewScript);
-                CBScriptTitle.SelectedIndex = iIndex;
-            }
-            else if (RB_Sh.Checked)
-            {
-                IScript oNewScript = moConfigs[typeof(ShScriptXml)].CreateNewScript();
-                int iIndex = CBScriptTitle.Items.Add(oNewScript);
-                CBScriptTitle.SelectedIndex = iIndex;
-            }
- 
+            IScript oNewScript = moConfigs[typeof(AwkScriptXml)].CreateNewScript();
+            int iIndex = CBScriptTitle.Items.Add(oNewScript);
+            CBScriptTitle.SelectedIndex = iIndex;
         }
-
 
         private void BtnDeleteScript_Click(object sender, EventArgs e)
         {
@@ -468,40 +434,6 @@ namespace AwkEverywhere.Forms
 					}
 				}
         	}
-        }
-
-        private void RB_Sh_CheckedChanged(object sender, EventArgs e)
-        {
-            IScript selectedScript = moSelectedScript;
-            if (RB_Sh.Checked && selectedScript != null && selectedScript.Type != ScriptType.Sh)
-            {
-                IFrontEndConfig oShConfig = moConfigs[typeof(ShScriptXml)];
-                IFrontEndConfig oAwkConfig = moConfigs[typeof(AwkScriptXml)];
-                oAwkConfig.DeleteScript(selectedScript);
-                IScript convertScript = oShConfig.CopyScript(selectedScript);
-                oShConfig.WriteScript(convertScript);
-                int i = CBScriptTitle.SelectedIndex;
-                CBScriptTitle.Items.RemoveAt(i);
-                CBScriptTitle.Items.Insert(i, convertScript);
-                CBScriptTitle.SelectedItem = convertScript;
-            }
-        }
-
-        private void RB_Awk_CheckedChanged(object sender, EventArgs e)
-        {
-            IScript selectedScript = moSelectedScript;
-            if (RB_Awk.Checked && selectedScript != null && selectedScript.Type != ScriptType.Awk && selectedScript.Type != ScriptType.Undefined)
-            {
-                IFrontEndConfig oShConfig = moConfigs[typeof(ShScriptXml)];
-                IFrontEndConfig oAwkConfig = moConfigs[typeof(AwkScriptXml)];
-                oShConfig.DeleteScript(selectedScript);
-                IScript convertScript = oAwkConfig.CopyScript(selectedScript);
-                oAwkConfig.WriteScript(convertScript);
-                int i = CBScriptTitle.SelectedIndex;
-                CBScriptTitle.Items.RemoveAt(i);
-                CBScriptTitle.Items.Insert(i, convertScript);
-                CBScriptTitle.SelectedItem = convertScript;
-            }
         }
 
         private DiffForm moDiffForm = null;

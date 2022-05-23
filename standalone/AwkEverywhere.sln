@@ -1,7 +1,8 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
-# SharpDevelop 3.0.0.3800
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32421.90
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AwkEverywhere", "AwkEverywhere.csproj", "{68E65852-E2AB-4FF1-81F6-271BC3573A6F}"
 EndProject
 Global
@@ -10,9 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{68E65852-E2AB-4FF1-81F6-271BC3573A6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{68E65852-E2AB-4FF1-81F6-271BC3573A6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{68E65852-E2AB-4FF1-81F6-271BC3573A6F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68E65852-E2AB-4FF1-81F6-271BC3573A6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{68E65852-E2AB-4FF1-81F6-271BC3573A6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68E65852-E2AB-4FF1-81F6-271BC3573A6F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D95082A7-D97D-4C2D-80B6-408AF9770623}
 	EndGlobalSection
 EndGlobal
