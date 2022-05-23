@@ -151,7 +151,7 @@ namespace AwkEverywhere
 
 			if (!RegisterHotKey(this.Handle, atomId.ToInt32(), (int)modifiers, (int)key)) {
 				GlobalDeleteAtom(atomId);
-				throw new Exception("Impossible d'enregistrer le raccourci !");
+				//throw new Exception("Impossible d'enregistrer le raccourci !");
 			}
 
 			this.hotkeys.Add(new HotKeyData(key, modifiers, atomId));

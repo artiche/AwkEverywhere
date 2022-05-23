@@ -39,7 +39,7 @@ namespace AwkEverywhere.Forms
             moDiffFrontEnd = new DiffFrontEnd();
             
             moHotKey = new HotKey(this);
-			moHotKey.RegisterHotKey(Keys.A, HotKey.HotKeyModifiers.Control | HotKey.HotKeyModifiers.Alt);
+			moHotKey.RegisterHotKey(Keys.K, HotKey.HotKeyModifiers.Control | HotKey.HotKeyModifiers.Shift);
 
 			moHotKey.HotKeyPress += new HotKey.HotKeyHandler(moHotKey_HotKeyPress);
             
@@ -127,11 +127,9 @@ namespace AwkEverywhere.Forms
         {
             //load scripts;
             IFrontEndConfig oAwkConfig = moConfigs[typeof(AwkScriptXml)];
-            IFrontEndConfig oShConfig = moConfigs[typeof(ShScriptXml)];
 
             List<IScript> oListeScripts = new List<IScript>();
             oListeScripts.AddRange(oAwkConfig.GetScripts());
-            oListeScripts.AddRange(oShConfig.GetScripts());
 
             if (oListeScripts.Count == 0)
             {
@@ -140,7 +138,7 @@ namespace AwkEverywhere.Forms
             
             CBScriptTitle.Items.AddRange(oListeScripts.ToArray());
 
-            int iSelectedScriptId = Math.Max(oAwkConfig.SelectedScriptId, oShConfig.SelectedScriptId);
+            int iSelectedScriptId = oAwkConfig.SelectedScriptId;
 
             foreach (IScript oElt in oListeScripts)
             {
